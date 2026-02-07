@@ -16,5 +16,11 @@ Uses Sqlalchemy and sqlite for storing data
 
 ## Tables
 __exams__: ID; name; max\_points; scored\_points; class\_id
+
 __classes__: ID; Name; semester\_id
+
 __semester__: ID; Name,
+
+
+## TUI Layout
+<!--TODO-->
