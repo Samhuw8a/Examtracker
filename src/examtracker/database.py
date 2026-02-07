@@ -1,3 +1,7 @@
+"""
+Database related functions for getting and adding entries
+"""
+
 from examtracker.database_scheme import Exam, Base, Class, Semester
 
 from sqlalchemy import create_engine, Engine  # type:ignore
