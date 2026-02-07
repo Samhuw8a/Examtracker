@@ -12,7 +12,7 @@ description = "A Python Exam Tracker"
 readme = "README.md"
 
 requires-python = ">=3.13"
-#license = { file = "LICENSE" }
+license = { file = "LICENSE" }
 
 authors = [{ name = "Samuel Huwiler", email = "samuel.huwiler@gmx.ch" }]
 

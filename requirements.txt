@@ -1,1 +1,4 @@
 rich
+sqlalchemy
+flask-sqlalchemy
+sqlalchemy-stubs
