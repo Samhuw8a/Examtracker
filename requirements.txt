@@ -1,4 +1,4 @@
-rich
+textual
 sqlalchemy
 flask-sqlalchemy
 sqlalchemy-stubs
