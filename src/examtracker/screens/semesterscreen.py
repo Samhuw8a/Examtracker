@@ -1,4 +1,4 @@
-from textual.app import  ComposeResult, Screen
+from textual.app import ComposeResult, Screen
 from textual.widgets import Footer, Header, DataTable, Input
 from examtracker.database import (
     get_all_semester,
@@ -8,10 +8,11 @@ from examtracker.database import (
 from textual import on
 from examtracker.screens.classscreen import ClassScreen
 
+
 class AddSemesterScreen(Screen):
-    def __init__(self)->None:
+    def __init__(self) -> None:
         super().__init__()
-        self.db_session = self.app.db_session #type: ignore
+        self.db_session = self.app.db_session  # type: ignore
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -33,7 +34,7 @@ class AddSemesterScreen(Screen):
         name = self.input.value.strip()
         if not name:
             return
-        add_semester(self.db_session, name) 
+        add_semester(self.db_session, name)
         self.db_session.commit()
         self.app.pop_screen()
 
@@ -44,10 +45,9 @@ class SemesterScreen(Screen):
         ("r", "remove", "Remove semester"),
     ]
 
-
-    def __init__(self)->None:
+    def __init__(self) -> None:
         super().__init__()
-        self.db_session = self.app.db_session #type: ignore
+        self.db_session = self.app.db_session  # type: ignore
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -91,5 +91,3 @@ class SemesterScreen(Screen):
 
         semester_name = self.semester_table.get_row_at(row_index)[0]
         self.app.push_screen(ClassScreen(semester_name))
-
-

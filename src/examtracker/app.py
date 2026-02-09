@@ -5,15 +5,14 @@ from examtracker.database import (
 from sqlalchemy.orm import Session
 from examtracker.screens.semesterscreen import SemesterScreen
 
-
 class ExamTracker(App):
     BINDINGS = [
         ("q", "quit", "Quit"),
     ]
 
-    def on_mount(self)->None:
+    def on_mount(self) -> None:
         self.push_screen(SemesterScreen())
-    
+
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.db_engine = create_database_engine("test.db")
