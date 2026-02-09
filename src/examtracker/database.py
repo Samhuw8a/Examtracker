@@ -84,21 +84,21 @@ def remove_class_by_name(session: Session, name: str) -> None:
 
 def remove_exam_by_id(session: Session, exam_id: int) -> None:
     exam_obj = get_exam_by_id(session, exam_id)
-    session.delete(exam_obj)
+    session.delete(exam_obj) # type: ignore
 
 
 def main() -> int:
     engine: Engine = create_database_engine("test.db")
-    # create_tables(engine)
-    session = Session(engine)
-    # add_semester(session, "FS25")
-    # remove_semester_by_name(session, "FS25")
-    # print(get_all_semester(session))
-    sem = get_semester_by_name(session, "HS24")
-    add_class_to_semester(session, "Eprog", sem)
-    # cls = get_class_by_name(session,"Eprog")
-    # print(get_all_exams_for_class(session, cls))
-    session.commit()
+    create_tables(engine)
+    # session = Session(engine)
+    # # add_semester(session, "FS25")
+    # # remove_semester_by_name(session, "FS25")
+    # # print(get_all_semester(session))
+    # sem = get_semester_by_name(session, "HS24")
+    # add_class_to_semester(session, "Eprog", sem)
+    # # cls = get_class_by_name(session,"Eprog")
+    # # print(get_all_exams_for_class(session, cls))
+    # session.commit()
     return 0
 
 

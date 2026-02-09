@@ -22,5 +22,8 @@ __classes__: ID; Name; semester\_id
 __semester__: ID; Name,
 
 
-## TUI Layout
-<!--TODO-->
+# TODOS
+
+- [  ] Handle SQL Errors
+- [  ] Initialize DB
+- [  ] Settings.json file
