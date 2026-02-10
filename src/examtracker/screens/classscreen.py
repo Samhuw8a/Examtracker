@@ -11,6 +11,7 @@ from textual import on
 from sqlalchemy.orm import Session
 
 from examtracker.screens.examscreen import ExamScreen
+from sqlalchemy.exc import IntegrityError
 
 
 class AddClassScreen(Screen):
@@ -21,6 +22,7 @@ class AddClassScreen(Screen):
     def __init__(self, semester_name: str, **kwargs):
         super().__init__(**kwargs)
         self.semester_name = semester_name
+        self.db_session = self.app.db_session  # type: ignore
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -42,12 +44,16 @@ class AddClassScreen(Screen):
         if not name:
             return  # Require class name
 
-        session = self.app.db_session  # type: ignore
-        semester = get_semester_by_name(session, self.semester_name)
+        semester = get_semester_by_name(self.db_session, self.semester_name)
 
         # Add the class
-        add_class_to_semester(session, name, semester)  # type: ignore
-        session.commit()
+        try:
+            add_class_to_semester(self.db_session, name, semester)  # type: ignore
+            self.db_session.commit()
+        except IntegrityError:
+            # TODO add error message for unique constraint
+            self.db_session.rollback()
+            pass
 
         # Pop the screen and return
         self.app.pop_screen()

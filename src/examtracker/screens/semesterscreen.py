@@ -7,6 +7,7 @@ from examtracker.database import (
 )
 from textual import on
 from examtracker.screens.classscreen import ClassScreen
+from sqlalchemy.exc import IntegrityError
 
 
 class AddSemesterScreen(Screen):
@@ -34,8 +35,14 @@ class AddSemesterScreen(Screen):
         name = self.input.value.strip()
         if not name:
             return
-        add_semester(self.db_session, name)
-        self.db_session.commit()
+        try:
+            add_semester(self.db_session, name)
+            self.db_session.commit()
+        except IntegrityError:
+            # TODO add error message for unique constraint
+            self.db_session.rollback()
+            pass
+
         self.app.pop_screen()
 
 
