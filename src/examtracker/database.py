@@ -4,14 +4,19 @@ Database related functions for getting and adding entries
 
 from examtracker.database_scheme import Exam, Base, Class, Semester
 
-from sqlalchemy import create_engine, Engine  # type:ignore
-from sqlalchemy.orm import Session, Query
+from sqlalchemy import create_engine, Engine, inspect  # type:ignore
+from sqlalchemy.orm import Session
 
 from typing import List
 
 
 def create_database_engine(path: str) -> Engine:
-    engine = create_engine("sqlite:///" + str(path), echo=False)
+    engine = create_engine("sqlite:////" + str(path), echo=False)
+    inspector = inspect(engine)
+
+    if not inspector.get_table_names():
+        create_tables(engine)
+
     return engine
 
 
@@ -84,7 +89,7 @@ def remove_class_by_name(session: Session, name: str) -> None:
 
 def remove_exam_by_id(session: Session, exam_id: int) -> None:
     exam_obj = get_exam_by_id(session, exam_id)
-    session.delete(exam_obj) # type: ignore
+    session.delete(exam_obj)  # type: ignore
 
 
 def main() -> int:

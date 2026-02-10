@@ -1,9 +1,9 @@
 from textual.app import App
-from examtracker.database import (
-    create_database_engine,
-)
 from sqlalchemy.orm import Session
 from examtracker.screens.semesterscreen import SemesterScreen
+from examtracker.settings import Settings
+from sqlalchemy import Engine  # type:ignore
+
 
 class ExamTracker(App):
     BINDINGS = [
@@ -13,10 +13,9 @@ class ExamTracker(App):
     def on_mount(self) -> None:
         self.push_screen(SemesterScreen())
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, db_engine: Engine, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.db_engine = create_database_engine("test.db")
-        self.db_session = Session(self.db_engine)
+        self.db_session = Session(db_engine)
 
     def quit(self) -> None:
         self.db_session.close()
