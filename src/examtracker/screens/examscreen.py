@@ -1,8 +1,8 @@
 from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, DataTable, Input
+from textual.widgets import Footer, Header, DataTable, Input, Label
 from examtracker.database import (
     get_all_exams_for_class,
-    get_class_by_name,
+    get_class_by_id,
     add_exam_to_class,
     remove_exam_by_id,
     get_exam_by_id,
@@ -24,6 +24,7 @@ class EditExamScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         with Vertical():
+            yield Label("Edit Exam")
             # Inputs for the class
             self.name_input = Input(placeholder="Exam Name", id="name")
             yield self.name_input
@@ -45,7 +46,6 @@ class EditExamScreen(Screen):
         self.score_input.value = str(exam.scored_points)
 
         self.name_input.focus()
-
 
     @on(Input.Submitted)
     def input_submitted(self, event: Input.Submitted) -> None:
@@ -84,14 +84,16 @@ class AddExamScreen(Screen):
         ("escape", "app.pop_screen", "Cancel"),
     ]
 
-    def __init__(self, class_name: str, **kwargs):
+    def __init__(self, class_id: int, **kwargs):
         super().__init__(**kwargs)
-        self.class_name = class_name
-        self.db_session = self.app.db_session #type: ignore
+        self.class_id = class_id
+        self.db_session = self.app.db_session  # type: ignore
+        self.class_name = get_class_by_id(self.db_session, self.class_id).name
 
     def compose(self) -> ComposeResult:
         yield Header()
         with Vertical():
+            yield Label(f"Add Exam to: {self.class_name}")
             # Inputs for the class
             self.name_input = Input(placeholder="Exam Name", id="name")
             yield self.name_input
@@ -131,7 +133,7 @@ class AddExamScreen(Screen):
             # Ignore invalid numbers for now
             scored_points = 0
 
-        class_obj = get_class_by_name(self.db_session, self.class_name)
+        class_obj = get_class_by_id(self.db_session, self.class_id)
 
         # Add the class
         add_exam_to_class(self.db_session, name, max_points, scored_points, class_obj)
@@ -148,10 +150,11 @@ class ExamScreen(Screen):
         ("r", "remove", "Remove exam"),
     ]
 
-    def __init__(self, class_name: str, **kwargs):
+    def __init__(self, class_id: int, **kwargs):
         super().__init__(**kwargs)
-        self.class_name = class_name
-        self.db_session = self.app.db_session #type: ignore
+        self.class_id = class_id
+        self.db_session = self.app.db_session  # type: ignore
+        self.class_name = get_class_by_id(self.db_session, self.class_id).name
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -159,6 +162,7 @@ class ExamScreen(Screen):
         self.exam_table: DataTable = DataTable()
         self.exam_table.add_columns("ID", "Name", "Max_points", "Scored_points", "%")
         self.exam_table.cursor_type = "row"
+        self.exam_table.border_title = f"Exams completed for {self.class_name}"
         yield self.exam_table
 
         yield Footer()
@@ -168,7 +172,7 @@ class ExamScreen(Screen):
         self.exam_table.focus()
 
     def action_add(self) -> None:
-        self.app.push_screen(AddExamScreen(self.class_name))
+        self.app.push_screen(AddExamScreen(self.class_id))
 
     def action_remove(self) -> None:
         row_index = self.exam_table.cursor_row
@@ -176,18 +180,17 @@ class ExamScreen(Screen):
             return
         row = self.exam_table.get_row_at(row_index)
         exam_id = row[0]
-        remove_exam_by_id(self.db_session, exam_id) 
+        remove_exam_by_id(self.db_session, exam_id)
         self.db_session.commit()
         self.refresh_table()
 
-
     def refresh_table(self) -> None:
-        class_obj = get_class_by_name(self.db_session, self.class_name)
+        class_obj = get_class_by_id(self.db_session, self.class_id)
 
         self.exam_table.clear()
         for cls in get_all_exams_for_class(self.db_session, class_obj):
 
-            if (cls.max_points==0):
+            if cls.max_points == 0:
                 proc = 0.0
             else:
                 proc = (cls.scored_points / cls.max_points) * 100

@@ -16,7 +16,7 @@ class Base(DeclarativeBase):
 class Exam(Base):
     __tablename__ = "exams"
     exam_id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(5))
+    name: Mapped[str] = mapped_column(String(30))
     max_points: Mapped[int]
     scored_points: Mapped[int]
     class_id: Mapped[int] = mapped_column(ForeignKey("classes.class_id"))
@@ -29,7 +29,7 @@ class Exam(Base):
 class Class(Base):
     __tablename__ = "classes"
     class_id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(10), unique=True)
+    name: Mapped[str] = mapped_column(String(30))
     semester_id: Mapped[int] = mapped_column(ForeignKey("semester.semester_id"))
     semester: Mapped["Semester"] = relationship(back_populates="classes")  # type:ignore
 
@@ -45,7 +45,7 @@ class Class(Base):
 class Semester(Base):
     __tablename__ = "semester"
     semester_id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(10), unique=True)
+    name: Mapped[str] = mapped_column(String(30), unique=True)
     classes: Mapped[List["Class"]] = relationship(
         back_populates="semester",
         cascade="all, delete-orphan",

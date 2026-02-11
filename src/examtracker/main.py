@@ -9,7 +9,7 @@ def main() -> int:
         "/Users/samuel/Repositories/Examtracker/data/config.yml"
     )
     db_engine = create_database_engine(config.database_path)
-    app = ExamTracker(db_engine)
+    app = ExamTracker(db_engine, config)
     app.run()
     return 0
 

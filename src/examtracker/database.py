@@ -34,8 +34,8 @@ def add_semester(session: Session, name: str) -> None:
     session.flush
 
 
-def get_class_by_name(session: Session, name: str) -> Semester:
-    return session.query(Class).filter_by(name=name).one()
+def get_class_by_id(session: Session, class_id: int) -> Semester:
+    return session.query(Class).filter_by(class_id=class_id).one()
 
 
 def get_exam_by_id(session: Session, exam_id: int) -> Semester:
@@ -82,8 +82,8 @@ def remove_semester_by_name(session: Session, name: str) -> None:
     session.delete(sem)  # type:ignore
 
 
-def remove_class_by_name(session: Session, name: str) -> None:
-    cls = get_class_by_name(session, name)
+def remove_class_by_id(session: Session, id: int) -> None:
+    cls = get_class_by_id(session, id)
     session.delete(cls)  # type:ignore
 
 

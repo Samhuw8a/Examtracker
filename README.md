@@ -11,7 +11,7 @@ Uses Sqlalchemy and sqlite for storing data
 '''
 - semster
     - class
-        - Exams [data, score]
+        - Exams [points, score]
 '''
 
 ## Tables
@@ -24,6 +24,6 @@ __semester__: ID; Name,
 
 # TODOS
 
-- [  ] Handle SQL Errors
-- [  ] Initialize DB
-- [  ] Settings.json file
+- [x] Handle SQL Errors
+- [x] Initialize DB
+- [x] Settings.json file

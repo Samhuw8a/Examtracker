@@ -1,11 +1,12 @@
 from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, DataTable, Input
+from textual.widgets import Footer, Header, DataTable, Input, Label
 from examtracker.database import (
     get_all_semester,
     add_semester,
     remove_semester_by_name,
 )
 from textual import on
+from textual.containers import Vertical
 from examtracker.screens.classscreen import ClassScreen
 from sqlalchemy.exc import IntegrityError
 
@@ -17,11 +18,13 @@ class AddSemesterScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        self.input = Input(
-            placeholder="Semester name (e.g. Fall 2026)",
-            id="semester_name",
-        )
-        yield self.input
+        with Vertical():
+            yield Label("Add new Semester")
+            self.input = Input(
+                placeholder="Semester name (e.g. Fall 2026)",
+                id="semester_name",
+            )
+            yield self.input
         yield Footer()
 
     def on_mount(self) -> None:
@@ -58,10 +61,10 @@ class SemesterScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        self.semester_table: DataTable = DataTable(classes="semester_list")
+        self.semester_table: DataTable = DataTable()
         self.semester_table.add_columns("Name")
         self.semester_table.cursor_type = "row"
-        self.refresh_table()
+        self.semester_table.border_title = "Semester Overview"
         yield self.semester_table
         yield Footer()
 

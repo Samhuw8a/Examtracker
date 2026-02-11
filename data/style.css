@@ -1,0 +1,30 @@
+DataTable {
+    border-title-align: center;
+    border-title-style: bold;
+    margin: 5;
+    padding: 2;
+    width: 75%;
+    border: white;
+}
+
+Screen {
+    position: relative;
+    align: center top;
+    margin: 3;
+}
+
+Vertical {
+    margin: 5;
+    align: center top; 
+    width:75%;
+}
+
+Input {
+    width: 75%;
+}
+
+
+Label {
+    width: 75%;
+    padding: 1;
+}

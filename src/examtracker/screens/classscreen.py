@@ -1,13 +1,14 @@
 from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, DataTable, Input
+from textual.widgets import Footer, Header, DataTable, Input, Label
 from examtracker.database import (
     get_all_classes_for_semester,
     get_semester_by_name,
     add_class_to_semester,
-    remove_class_by_name,
+    remove_class_by_id,
 )
 
 from textual import on
+from textual.containers import Vertical
 from sqlalchemy.orm import Session
 
 from examtracker.screens.examscreen import ExamScreen
@@ -26,9 +27,11 @@ class AddClassScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        # Inputs for the class
-        self.name_input = Input(placeholder="Class Name", id="name")
-        yield self.name_input
+        with Vertical():
+            yield Label(f"Add Class to: {self.semester_name}")
+            # Inputs for the class
+            self.name_input = Input(placeholder="Class Name", id="name")
+            yield self.name_input
         yield Footer()
 
     def on_mount(self) -> None:
@@ -78,8 +81,11 @@ class ClassScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         self.class_table: DataTable = DataTable()
-        self.class_table.add_columns("Name")
+        self.class_table.add_columns("ID", "Name")
         self.class_table.cursor_type = "row"
+        self.class_table.border_title = (
+            f"Classes for the Semester: {self.semester_name}"
+        )
         yield self.class_table
         yield Footer()
 
@@ -94,8 +100,8 @@ class ClassScreen(Screen):
         if row_index is None:
             return
         row = self.class_table.get_row_at(row_index)
-        class_name = row[0]
-        remove_class_by_name(self.db_session, class_name)
+        class_id = row[0]
+        remove_class_by_id(self.db_session, class_id)
         self.db_session.commit()
         self.refresh_table()
 
@@ -104,7 +110,7 @@ class ClassScreen(Screen):
 
         self.class_table.clear()
         for cls in get_all_classes_for_semester(self.db_session, semester):
-            self.class_table.add_row(cls.name)
+            self.class_table.add_row(cls.class_id, cls.name)
 
     def on_screen_resume(self) -> None:
         # Called when returning from AddSemesterScreen
@@ -118,5 +124,5 @@ class ClassScreen(Screen):
         if row_index is None:
             return
 
-        class_name = self.class_table.get_row_at(row_index)[0]
-        self.app.push_screen(ExamScreen(class_name))
+        class_id = self.class_table.get_row_at(row_index)[0]
+        self.app.push_screen(ExamScreen(class_id))
