@@ -8,7 +8,7 @@ Uses Sqlalchemy and sqlite for storing data and Textual as the TUI backend
 
 
 # Instalation
-- Clone the repository to your mashine
+- Clone the repository to your Computer
 ```bash
 git clone https://github.com/Samhuw8a/Examtracker.git
 ```
