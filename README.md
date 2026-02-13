@@ -18,6 +18,7 @@ Install the Project on your computer
 cd Examtracker
 python -m pip install -e .
 ```
+you might have to add the --break-system-packages flag to the install command.
 
 you need to change the location of the config file inside the main.py file
 get the location:
