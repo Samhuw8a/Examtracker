@@ -22,4 +22,4 @@ dependencies = {file = ["requirements.txt"]}
 optional-dependencies = {dev = { file = ["dev_requirements.txt"] }}
 
 [project.scripts]
-examtracker = "examtracker:__main__"
+examtracker = "examtracker.__main__:main"
