@@ -28,5 +28,5 @@ __semester__: ID; Name,
 - [x] Initialize DB
 - [x] Settings.json file
 - [ ] system independant config searching
-- [ ] Abort edit and add screens
+- [x] Abort edit and add screens
 

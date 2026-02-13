@@ -1,5 +1,5 @@
 from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, DataTable, Input, Label
+from textual.widgets import Footer, Header, Input, Label, DataTable
 from examtracker.database import (
     get_all_exams_for_class,
     get_class_by_id,
@@ -9,6 +9,7 @@ from examtracker.database import (
 )
 from textual.containers import Vertical
 from textual import on
+from examtracker.textual_utils.vimtable import VimTable
 
 
 class EditExamScreen(Screen):
@@ -152,7 +153,7 @@ class ExamScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
 
-        self.exam_table: DataTable = DataTable()
+        self.exam_table: VimTable = VimTable()
         self.exam_table.add_columns("ID", "Name", "Max_points", "Scored_points", "%")
         self.exam_table.cursor_type = "row"
         self.exam_table.border_title = f"Exams completed for: {self.class_name}"
@@ -197,7 +198,7 @@ class ExamScreen(Screen):
         # Called when returning from AddSemesterScreen
         self.refresh_table()
 
-    @on(DataTable.RowSelected)
+    @on(VimTable.RowSelected)
     def edit_exam(self, event: DataTable.RowSelected) -> None:
         row_index = self.exam_table.cursor_row
         if row_index is None:

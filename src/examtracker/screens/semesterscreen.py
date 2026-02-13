@@ -1,5 +1,5 @@
 from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, DataTable, Input, Label
+from textual.widgets import Footer, Header, Input, Label, DataTable
 from examtracker.database import (
     get_all_semester,
     add_semester,
@@ -9,6 +9,7 @@ from textual import on
 from textual.containers import Vertical
 from examtracker.screens.classscreen import ClassScreen
 from sqlalchemy.exc import IntegrityError
+from examtracker.textual_utils.vimtable import VimTable
 
 
 class AddSemesterScreen(Screen):
@@ -61,11 +62,10 @@ class SemesterScreen(Screen):
 
     def __init__(self) -> None:
         super().__init__()
-        self.db_session = self.app.db_session  # type: ignore
 
     def compose(self) -> ComposeResult:
         yield Header()
-        self.semester_table: DataTable = DataTable()
+        self.semester_table: VimTable = VimTable()
         self.semester_table.add_columns("Name")
         self.semester_table.cursor_type = "row"
         self.semester_table.border_title = "Semester Overview"
@@ -73,6 +73,7 @@ class SemesterScreen(Screen):
         yield Footer()
 
     def on_mount(self) -> None:
+        self.db_session = self.app.db_session  # type: ignore
         self.refresh_table()
         self.semester_table.focus()
 
@@ -100,7 +101,7 @@ class SemesterScreen(Screen):
     def on_screen_resume(self) -> None:
         self.refresh_table()
 
-    @on(DataTable.RowSelected)
+    @on(VimTable.RowSelected)
     def open_class(self, event: DataTable.RowSelected) -> None:
         row_index = self.semester_table.cursor_row
         if row_index is None:
