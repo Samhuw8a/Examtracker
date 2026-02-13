@@ -3,30 +3,21 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FSamhuw8a%2FExamtracker%2Fmaster%2Fpyproject.toml&color=d8634c)
 
 # A Python examtracker for the "Lernphase"
-Allows you to keep track of all the Exams you already finished and the scores
-Uses Sqlalchemy and sqlite for storing data
+Allows you to keep track of all the Exams you already finished and the scores you got.
+Uses Sqlalchemy and sqlite for storing data and Textual as the TUI backend
 
-
-## Data structure
-'''
-- semster
-    - class
-        - Exams [points, score]
-'''
-
-## Tables
+## SQL Tables
 __exams__: ID; name; max\_points; scored\_points; class\_id
 
 __classes__: ID; Name; semester\_id
 
-__semester__: ID; Name,
+__semester__: ID; Name (Unique),
 
-
-# TODOS
+## TODOS
 
 - [x] Handle SQL Errors
 - [x] Initialize DB
 - [x] Settings.json file
-- [ ] system independant config searching
 - [x] Abort edit and add screens
-
+- [ ] system independant config searching
+- [ ] better CSS
