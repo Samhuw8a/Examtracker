@@ -27,7 +27,7 @@ get the location:
 cd data
 echo "$(pwd)/config.yml"
 ```
-You also have to change the path to the css and db files to your current directory
+You also have to change the path to the css and db files to your current directory inside the config.yml
 
 change this line:
 ```python
