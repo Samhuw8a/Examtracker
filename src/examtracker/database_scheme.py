@@ -2,11 +2,15 @@
 Defining the database tables and entries
 """
 
-from sqlalchemy.orm import Mapped, mapped_column  # type:ignore
-from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import DeclarativeBase, relationship  # type:ignore
-
 from typing import List
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,  # type:ignore
+    mapped_column,
+    relationship,
+)
 
 
 class Base(DeclarativeBase):

@@ -1,5 +1,5 @@
-from pydantic import BaseModel
 import yaml  # type: ignore
+from pydantic import BaseModel
 
 
 class Settings(BaseModel):

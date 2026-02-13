@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 from examtracker.app import ExamTracker
-from examtracker.settings import Settings, read_settings_from_config
 from examtracker.database import create_database_engine
+from examtracker.settings import Settings, read_settings_from_config
 
 
 def main() -> int:

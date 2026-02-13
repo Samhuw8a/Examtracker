@@ -2,12 +2,12 @@
 Database related functions for getting and adding entries
 """
 
-from examtracker.database_scheme import Exam, Base, Class, Semester
+from typing import List
 
-from sqlalchemy import create_engine, Engine, inspect  # type:ignore
+from sqlalchemy import Engine, create_engine, inspect  # type:ignore
 from sqlalchemy.orm import Session
 
-from typing import List
+from examtracker.database_scheme import Base, Class, Exam, Semester
 
 
 def create_database_engine(path: str) -> Engine:

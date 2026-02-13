@@ -1,14 +1,15 @@
+from textual import on
 from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, Input, Label, DataTable
+from textual.containers import Vertical
+from textual.widgets import DataTable, Footer, Header, Input, Label
+
 from examtracker.database import (
+    add_exam_to_class,
     get_all_exams_for_class,
     get_class_by_id,
-    add_exam_to_class,
-    remove_exam_by_id,
     get_exam_by_id,
+    remove_exam_by_id,
 )
-from textual.containers import Vertical
-from textual import on
 from examtracker.textual_utils.vimtable import VimTable
 
 

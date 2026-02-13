@@ -1,8 +1,9 @@
-from textual.app import App, ComposeResult
+from sqlalchemy import Engine  # type:ignore
 from sqlalchemy.orm import Session
+from textual.app import App, ComposeResult
+
 from examtracker.screens.semesterscreen import SemesterScreen
 from examtracker.settings import Settings
-from sqlalchemy import Engine  # type:ignore
 
 
 class ExamTracker(App):

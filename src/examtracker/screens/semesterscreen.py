@@ -1,14 +1,11 @@
-from textual.app import ComposeResult, Screen
-from textual.widgets import Footer, Header, Input, Label, DataTable
-from examtracker.database import (
-    get_all_semester,
-    add_semester,
-    remove_semester_by_name,
-)
-from textual import on
-from textual.containers import Vertical
-from examtracker.screens.classscreen import ClassScreen
 from sqlalchemy.exc import IntegrityError
+from textual import on
+from textual.app import ComposeResult, Screen
+from textual.containers import Vertical
+from textual.widgets import DataTable, Footer, Header, Input, Label
+
+from examtracker.database import add_semester, get_all_semester, remove_semester_by_name
+from examtracker.screens.classscreen import ClassScreen
 from examtracker.textual_utils.vimtable import VimTable
 
 
