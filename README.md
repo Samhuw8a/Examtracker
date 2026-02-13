@@ -27,6 +27,8 @@ get the location:
 cd data
 echo "$(pwd)/config.yml"
 ```
+You also have to change the path to the css and db files to your current directory
+
 change this line:
 ```python
     config: Settings = read_settings_from_config(
