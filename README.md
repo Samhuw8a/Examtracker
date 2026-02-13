@@ -13,23 +13,24 @@ Clone the repository to your mashine
 git clone https://github.com/Samhuw8a/Examtracker.git
 ```
 
-get the location of the config file on your system
-
-MacOS:
+Install the Project on your computer
 ```bash
-cd Examtracker/data
-echo "$(pwd)/config.yml" | pbcopy
+cd Examtracker
+python -m pip install -e .
 ```
 
-Linux:
+you need to change the location of the config file inside the main.py file
+get the location:
 ```bash
-cd Examtracker/data
-echo "$(pwd)/config.yml" | xclip -selection clipboard
+cd data
+echo "$(pwd)/config.yml"
 ```
 
-Change the value in the main.py file
-```
-cd ../src/examtracker
+change this line:
+```python
+    config: Settings = read_settings_from_config(
+        "/Users/samuel/Repositories/Examtracker/data/config.yml"  # Change this value
+    )
 ```
 
 ## SQL Tables
