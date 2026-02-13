@@ -6,6 +6,32 @@
 Allows you to keep track of all the Exams you already finished and the scores you got.
 Uses Sqlalchemy and sqlite for storing data and Textual as the TUI backend
 
+
+# Instalation
+Clone the repository to your mashine
+'''bash
+git clone https://github.com/Samhuw8a/Examtracker.git
+'''
+
+get the location of the config file on your system
+
+MacOS:
+'''bash
+cd Examtracker/data
+echo "$(pwd)/config.yml" | pbcopy
+'''
+
+Linux:
+'''bash
+cd Examtracker/data
+echo "$(pwd)/config.yml" | xclip -selection clipboard
+'''
+
+Change the value in the main.py file
+'''
+cd ../src/examtracker
+'''
+
 ## SQL Tables
 __exams__: ID; name; max\_points; scored\_points; class\_id
 

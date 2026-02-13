@@ -7,7 +7,7 @@ from examtracker.settings import Settings, read_settings_from_config
 
 def main() -> int:
     config: Settings = read_settings_from_config(
-        "/Users/samuel/Repositories/Examtracker/data/config.yml"
+        "/Users/samuel/Repositories/Examtracker/data/config.yml"  # Change this value
     )
     db_engine = create_database_engine(config.database_path)
     app = ExamTracker(db_engine, config)
