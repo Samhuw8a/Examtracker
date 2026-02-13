@@ -8,30 +8,37 @@ Uses Sqlalchemy and sqlite for storing data and Textual as the TUI backend
 
 
 # Instalation
-Clone the repository to your mashine
+- Clone the repository to your mashine
 ```bash
 git clone https://github.com/Samhuw8a/Examtracker.git
 ```
 
-Install the Project on your computer
+- Install the Project on your computer
 ```bash
 cd Examtracker
 python -m pip install -e .
 ```
-you might have to add the --break-system-packages flag to the install command.
+_You might have to add the --break-system-packages flag to the install command._
 
-you need to change the location of the config file inside the main.py file
+
+- You then need to change the location of the config file inside the main.py file
 get the location:
 ```bash
 cd data
 echo "$(pwd)/config.yml"
 ```
-
 change this line:
 ```python
     config: Settings = read_settings_from_config(
         "/Users/samuel/Repositories/Examtracker/data/config.yml"  # Change this value
     )
+```
+
+
+# Usage
+Once installed the programm can be used like so:
+```bash
+examtracker
 ```
 
 ## SQL Tables
