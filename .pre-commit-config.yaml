@@ -17,3 +17,9 @@ repos:
         args: [--ignore-missing-imports, --disallow-untyped-calls ]
         #additional_dependencies: [types-all]
         exclude: ^testing/resources/
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--filter-files"]
