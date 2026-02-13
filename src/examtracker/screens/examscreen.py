@@ -48,9 +48,6 @@ class EditExamScreen(Screen):
         self.name_input.focus()
 
     @on(Input.Submitted)
-    def input_submitted(self, event: Input.Submitted) -> None:
-        self.submit()
-
     def submit(self) -> None:
         name = self.name_input.value.strip()
         if not name:
@@ -111,11 +108,7 @@ class AddExamScreen(Screen):
     def on_mount(self) -> None:
         self.name_input.focus()
 
-    # Submit on Enter from any Input
     @on(Input.Submitted)
-    def input_submitted(self, event: Input.Submitted) -> None:
-        self.submit()
-
     def submit(self) -> None:
         name = self.name_input.value.strip()
         if not name:
@@ -147,7 +140,7 @@ class ExamScreen(Screen):
     BINDINGS = [
         ("escape", "app.pop_screen", "Back"),
         ("a", "add", "Add exam"),
-        ("r", "remove", "Remove exam"),
+        ("ctrl+r", "remove", "Remove exam"),
     ]
 
     def __init__(self, class_id: int, **kwargs):
@@ -162,7 +155,7 @@ class ExamScreen(Screen):
         self.exam_table: DataTable = DataTable()
         self.exam_table.add_columns("ID", "Name", "Max_points", "Scored_points", "%")
         self.exam_table.cursor_type = "row"
-        self.exam_table.border_title = f"Exams completed for {self.class_name}"
+        self.exam_table.border_title = f"Exams completed for: {self.class_name}"
         yield self.exam_table
 
         yield Footer()
@@ -178,6 +171,8 @@ class ExamScreen(Screen):
         row_index = self.exam_table.cursor_row
         if row_index is None:
             return
+        if not self.exam_table.is_valid_row_index(row_index):
+            return
         row = self.exam_table.get_row_at(row_index)
         exam_id = row[0]
         remove_exam_by_id(self.db_session, exam_id)
@@ -189,7 +184,6 @@ class ExamScreen(Screen):
 
         self.exam_table.clear()
         for cls in get_all_exams_for_class(self.db_session, class_obj):
-
             if cls.max_points == 0:
                 proc = 0.0
             else:
@@ -203,7 +197,8 @@ class ExamScreen(Screen):
         # Called when returning from AddSemesterScreen
         self.refresh_table()
 
-    def on_data_table_row_selected(self, event: DataTable.RowSelected) -> None:
+    @on(DataTable.RowSelected)
+    def edit_exam(self, event: DataTable.RowSelected) -> None:
         row_index = self.exam_table.cursor_row
         if row_index is None:
             return

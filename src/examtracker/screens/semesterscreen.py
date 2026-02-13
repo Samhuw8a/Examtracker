@@ -12,6 +12,10 @@ from sqlalchemy.exc import IntegrityError
 
 
 class AddSemesterScreen(Screen):
+    BINDINGS = [
+        ("escape", "app.pop_screen", "Cancel"),
+    ]
+
     def __init__(self) -> None:
         super().__init__()
         self.db_session = self.app.db_session  # type: ignore
@@ -52,7 +56,7 @@ class AddSemesterScreen(Screen):
 class SemesterScreen(Screen):
     BINDINGS = [
         ("a", "add", "Add semester"),
-        ("r", "remove", "Remove semester"),
+        ("ctrl+r", "remove", "Remove semester"),
     ]
 
     def __init__(self) -> None:
@@ -84,6 +88,8 @@ class SemesterScreen(Screen):
         row_index = self.semester_table.cursor_row
         if row_index is None:
             return
+        if not self.semester_table.is_valid_row_index(row_index):
+            return
         row = self.semester_table.get_row_at(row_index)
         semester_name = row[0]
 
@@ -94,7 +100,8 @@ class SemesterScreen(Screen):
     def on_screen_resume(self) -> None:
         self.refresh_table()
 
-    def on_data_table_row_selected(self, event: DataTable.RowSelected) -> None:
+    @on(DataTable.RowSelected)
+    def open_class(self, event: DataTable.RowSelected) -> None:
         row_index = self.semester_table.cursor_row
         if row_index is None:
             return

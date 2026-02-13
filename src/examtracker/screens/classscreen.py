@@ -39,9 +39,6 @@ class AddClassScreen(Screen):
 
     # Submit on Enter from any Input
     @on(Input.Submitted)
-    def input_submitted(self, event: Input.Submitted) -> None:
-        self.submit()
-
     def submit(self) -> None:
         name = self.name_input.value.strip()
         if not name:
@@ -70,7 +67,7 @@ class ClassScreen(Screen):
     BINDINGS = [
         ("escape", "app.pop_screen", "Back"),
         ("a", "add", "Add semester"),
-        ("r", "remove", "Remove semester"),
+        ("ctrl+r", "remove", "Remove semester"),
     ]
 
     def __init__(self, semester_name: str) -> None:
@@ -83,9 +80,7 @@ class ClassScreen(Screen):
         self.class_table: DataTable = DataTable()
         self.class_table.add_columns("ID", "Name")
         self.class_table.cursor_type = "row"
-        self.class_table.border_title = (
-            f"Classes for the Semester: {self.semester_name}"
-        )
+        self.class_table.border_title = f"Classes for: {self.semester_name}"
         yield self.class_table
         yield Footer()
 
@@ -98,6 +93,8 @@ class ClassScreen(Screen):
     def action_remove(self) -> None:
         row_index = self.class_table.cursor_row
         if row_index is None:
+            return
+        if not self.class_table.is_valid_row_index(row_index):
             return
         row = self.class_table.get_row_at(row_index)
         class_id = row[0]
@@ -116,10 +113,8 @@ class ClassScreen(Screen):
         # Called when returning from AddSemesterScreen
         self.refresh_table()
 
-    def on_data_table_row_selected(self, event: DataTable.RowSelected) -> None:
-        """
-        Open a new ExamScreen for the selected class
-        """
+    @on(DataTable.RowSelected)
+    def open_exam(self, event: DataTable.RowSelected) -> None:
         row_index = self.class_table.cursor_row
         if row_index is None:
             return

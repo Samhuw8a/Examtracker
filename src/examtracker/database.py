@@ -34,11 +34,11 @@ def add_semester(session: Session, name: str) -> None:
     session.flush
 
 
-def get_class_by_id(session: Session, class_id: int) -> Semester:
+def get_class_by_id(session: Session, class_id: int) -> Class:
     return session.query(Class).filter_by(class_id=class_id).one()
 
 
-def get_exam_by_id(session: Session, exam_id: int) -> Semester:
+def get_exam_by_id(session: Session, exam_id: int) -> Exam:
     return session.query(Exam).filter_by(exam_id=exam_id).one()
 
 
@@ -73,7 +73,7 @@ def get_all_semester(session: Session) -> List[Semester]:
 
 def get_all_classes_for_semester(
     session: Session, semster_obj: Semester
-) -> List[Semester]:
+) -> List[Class]:
     return session.query(Class).filter_by(semester_id=semster_obj.semester_id).all()
 
 
