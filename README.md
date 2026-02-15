@@ -33,7 +33,7 @@ The Programm searches for a file called __config.yml__ at __~/.config/examtracke
 
 <details>
 <summary> default config.yml </summary>
-```yaml
+```YAML
 database_path: "<path to repo>/data/test.db"
 css_path: "<path to repo>/data/style.css"
 ```
@@ -45,10 +45,9 @@ You can also change to location the programm searches for the config at.
 
 <details>
 <summary> Enviroment variables overview</summary>
-```env
+```Denv
 EXAMTRACKER_DATABASE_PATH=/tmp/test.db
 EXAMTRACKER_CSS_PATH=/tmp/style.css
-
 EXAMTRACKER_CONFIG=/tmp/config.yml
 ```
 </details>
