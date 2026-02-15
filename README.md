@@ -108,3 +108,4 @@ Environment variables override values defined in `config.yml`.
 - [x] Abort edit and add screens  
 - [x] Cross-platform config discovery  
 - [ ] Improve CSS  
+- [x] enable Editing Exams and Semester
