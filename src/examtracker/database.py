@@ -11,7 +11,7 @@ from examtracker.database_scheme import Base, Class, Exam, Semester
 
 
 def create_database_engine(path: str) -> Engine:
-    engine = create_engine("sqlite:////" + str(path), echo=False)
+    engine = create_engine("sqlite:///" + path, echo=False)
     inspector = inspect(engine)
 
     if not inspector.get_table_names():
@@ -94,8 +94,8 @@ def remove_exam_by_id(session: Session, exam_id: int) -> None:
 
 def main() -> int:
     engine: Engine = create_database_engine("test.db")
-    create_tables(engine)
-    # session = Session(engine)
+    # create_tables(engine)
+    session = Session(engine)
     # # add_semester(session, "FS25")
     # # remove_semester_by_name(session, "FS25")
     # # print(get_all_semester(session))
@@ -103,7 +103,7 @@ def main() -> int:
     # add_class_to_semester(session, "Eprog", sem)
     # # cls = get_class_by_name(session,"Eprog")
     # # print(get_all_exams_for_class(session, cls))
-    # session.commit()
+    session.commit()
     return 0
 
 

@@ -2,13 +2,11 @@ from __future__ import annotations
 
 from examtracker.app import ExamTracker
 from examtracker.database import create_database_engine
-from examtracker.settings import Settings, read_settings_from_config
+from examtracker.settings import Settings
 
 
 def main() -> int:
-    config: Settings = read_settings_from_config(
-        "/Users/samuel/Repositories/Examtracker/data/config.yml"  # Change this value
-    )
+    config: Settings = Settings()
     db_engine = create_database_engine(config.database_path)
     app = ExamTracker(db_engine, config)
     app.run()

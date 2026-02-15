@@ -2,4 +2,6 @@ textual
 sqlalchemy
 flask-sqlalchemy
 pydantic
+pydantic-settings
+pathlib
 pyyaml

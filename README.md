@@ -56,5 +56,5 @@ __semester__: ID; Name (Unique),
 - [x] Initialize DB
 - [x] Settings.json file
 - [x] Abort edit and add screens
-- [ ] system independant config searching
+- [x] system independant config searching
 - [ ] better CSS
