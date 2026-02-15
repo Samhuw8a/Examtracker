@@ -52,8 +52,7 @@ By default, the program searches for:
 <summary>default configuration</summary>
 
 ```yaml
-database_path: "<path to repo>/data/test.db"
-css_path: "<path to repo>/data/style.css"
+database_path: "~/.config/examtracker/examtracker.db"
 ```
 
 </details>
