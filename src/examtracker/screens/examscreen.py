@@ -173,6 +173,8 @@ class ExamScreen(Screen):
         row_index = self.exam_table.cursor_row
         if row_index is None:
             return
+        if not self.exam_table.is_valid_row_index(row_index):
+            return
 
         exam_id = self.exam_table.get_row_at(row_index)[0]
         self.app.push_screen(EditExamScreen(exam_id))

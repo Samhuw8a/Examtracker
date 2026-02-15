@@ -118,6 +118,8 @@ class ClassScreen(Screen):
         row_index = self.class_table.cursor_row
         if row_index is None:
             return
+        if not self.class_table.is_valid_row_index(row_index):
+            return
 
         class_id = self.class_table.get_row_at(row_index)[0]
         self.app.push_screen(EditClassScreen(class_id))

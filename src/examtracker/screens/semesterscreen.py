@@ -103,6 +103,8 @@ class SemesterScreen(Screen):
         row_index = self.semester_table.cursor_row
         if row_index is None:
             return
+        if not self.semester_table.is_valid_row_index(row_index):
+            return
 
         semester_name = self.semester_table.get_row_at(row_index)[0]
         self.app.push_screen(EditSemesterScreen(semester_name))
