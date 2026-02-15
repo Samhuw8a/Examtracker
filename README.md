@@ -16,17 +16,8 @@ The application uses:
 
 # Installation
 
-### Clone the repository
-
 ```bash
-git clone https://github.com/Samhuw8a/Examtracker.git
-```
-
-### Install the project
-
-```bash
-cd Examtracker
-python -m pip install -e .
+python -m pip install examtracker
 ```
 
 > You might need to add the `--break-system-packages` flag to the install command
