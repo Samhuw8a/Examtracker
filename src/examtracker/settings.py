@@ -1,20 +1,42 @@
 from __future__ import annotations
 
 import os
+import sys
 from importlib.resources import files
 from pathlib import Path
 from typing import Any, Dict
 
 import yaml  # type: ignore
+from platformdirs import PlatformDirs
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Used for searching the config
 APP_NAME = "examtracker"
+APP_AUTHOR = "Samuel Huwiler"
+
+dirs = PlatformDirs(appname=APP_NAME, appauthor=APP_AUTHOR)
 
 
-def get_default_data_dir() -> Path:
-    return Path(files(APP_NAME).joinpath("data"))  # type: ignore
+def get_config_dir() -> Path:
+    if sys.platform == "darwin":
+        # Force ~/.config instead of ~/Library/Application Support
+        return Path.home() / ".config" / APP_NAME
+    else:
+        # Linux & Windows default
+        return Path(dirs.user_config_dir)
+
+
+def get_default_database_path() -> Path:
+    """Return a writable database path in the user data directory."""
+
+    db_dir = get_config_dir()
+    db_dir.mkdir(parents=True, exist_ok=True)
+    return db_dir / "examtracker.db"
+
+
+def get_default_css_path() -> Path:
+    """Return the path to the CSS inside the package data folder."""
+    return Path(files("examtracker").joinpath("data/style.css"))  # type:ignore
 
 
 def yaml_config_settings_source(settings_cls) -> Dict[str, Any]:
@@ -26,7 +48,7 @@ def yaml_config_settings_source(settings_cls) -> Dict[str, Any]:
             with open(path, "r") as f:
                 return yaml.safe_load(f) or {}
 
-    user_config = Path.home() / ".config" / APP_NAME / "config.yml"
+    user_config = get_config_dir() / "config.yml"
 
     if user_config.exists():
         with open(user_config, "r") as f:
@@ -36,9 +58,8 @@ def yaml_config_settings_source(settings_cls) -> Dict[str, Any]:
 
 
 class Settings(BaseSettings):
-    database_path: str = Field(default=str(get_default_data_dir() / "test.db"))
-    css_path: str = Field(default=str(get_default_data_dir() / "style.css"))
-
+    database_path: str = Field(default_factory=lambda: str(get_default_database_path()))
+    css_path: str = Field(default_factory=lambda: str(get_default_css_path()))
     model_config = SettingsConfigDict(
         env_prefix="EXAMTRACKER_",
         extra="ignore",
@@ -63,8 +84,7 @@ class Settings(BaseSettings):
 
 
 def main() -> int:
-    res = get_default_data_dir()
-    print(res)
+    print(Settings())
     return 0
 
 
