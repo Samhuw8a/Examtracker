@@ -3,3 +3,4 @@ mypy
 types-PyYAML
 sqlalchemy-stubs
 textual-dev
+build

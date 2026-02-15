@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from importlib.resources import files
 from pathlib import Path
 from typing import Any, Dict
 
@@ -13,8 +14,7 @@ APP_NAME = "examtracker"
 
 
 def get_default_data_dir() -> Path:
-    base_dir = Path(__file__).resolve().parent.parent.parent  # project root
-    return base_dir / "data"
+    return Path(files(APP_NAME).joinpath("data"))  # type: ignore
 
 
 def yaml_config_settings_source(settings_cls) -> Dict[str, Any]:
