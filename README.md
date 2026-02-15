@@ -2,69 +2,119 @@
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FSamhuw8a%2FExamtracker%2Fmaster%2Fpyproject.toml&color=d8634c)
 
-# A Python examtracker for the "Lernphase"
-Allows you to keep track of all the Exams you already finished and the scores you got.
-Uses Sqlalchemy and sqlite for storing data and Textual as the TUI backend
+# Examtracker
 
+A Python exam tracker for the **"Lernphase"**.  
+It allows you to keep track of all exams you have completed and the scores you achieved.
 
-# Instalation
-- Clone the repository to your Computer
+The application uses:
+
+- SQLAlchemy + SQLite for data storage  
+- Textual as the TUI backend  
+
+---
+
+# Installation
+
+### Clone the repository
+
 ```bash
 git clone https://github.com/Samhuw8a/Examtracker.git
 ```
 
-- Install the Project on your computer
+### Install the project
+
 ```bash
 cd Examtracker
 python -m pip install -e .
 ```
-_You might have to add the --break-system-packages flag to the install command._
 
+> You might need to add the `--break-system-packages` flag to the install command
+
+---
 
 # Usage
-Once installed the programm can be used like so:
+
+Once installed, you can start the program with:
+
 ```bash
 examtracker
 ```
 
-## Configuration
-If you want to change the location of the db file you can do so inside a config file.
-The Programm searches for a file called __config.yml__ at __~/.config/examtracker/__
+---
+
+# Configuration
+
+You can change the location of the database file using a configuration file.
+
+By default, the program searches for:
+
+```
+~/.config/examtracker/config.yml
+```
+
+---
+
+## Default `config.yml`
 
 <details>
-<summary> default config.yml </summary>
-```YAML
+<summary>default configuration</summary>
+
+```yaml
 database_path: "<path to repo>/data/test.db"
 css_path: "<path to repo>/data/style.css"
 ```
+
 </details>
 
-### Enviroment variables
-All the configuration can be done with env-variables.
-You can also change to location the programm searches for the config at.
+---
+
+## Environment Variables
+
+All configuration options can also be set using environment variables.
+
+You can even change the location where the program searches for the configuration file.
 
 <details>
-<summary> Enviroment variables overview</summary>
-```Denv
+<summary>Environment variables</summary>
+
+```env
 EXAMTRACKER_DATABASE_PATH=/tmp/test.db
 EXAMTRACKER_CSS_PATH=/tmp/style.css
 EXAMTRACKER_CONFIG=/tmp/config.yml
 ```
+
 </details>
- 
 
-## SQL Tables
-__exams__: ID; name; max\_points; scored\_points; class\_id
+Environment variables override values defined in `config.yml`.
 
-__classes__: ID; Name; semester\_id
+---
 
-__semester__: ID; Name (Unique),
+# Database Schema
 
-## TODOS
+### `exams`
+- `id`
+- `name`
+- `max_points`
+- `scored_points`
+- `class_id`
 
-- [x] Handle SQL Errors
-- [x] Initialize DB
-- [x] Settings.json file
-- [x] Abort edit and add screens
-- [x] system independant config searching
-- [ ] better CSS
+### `classes`
+- `id`
+- `name`
+- `semester_id`
+
+### `semester`
+- `id`
+- `name` (unique)
+
+---
+
+# TODO
+
+- [x] Handle SQL errors  
+- [x] Initialize database  
+- [x] Configuration file support  
+- [x] Abort edit and add screens  
+- [x] Cross-platform config discovery  
+- [ ] Improve CSS  
