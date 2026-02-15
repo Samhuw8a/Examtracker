@@ -21,27 +21,38 @@ python -m pip install -e .
 _You might have to add the --break-system-packages flag to the install command._
 
 
-- You then need to change the location of the config file inside the main.py file
-get the location:
-```bash
-cd data
-echo "$(pwd)/config.yml"
-```
-You also have to change the path to the css and db files to your current directory inside the config.yml
-
-change this line:
-```python
-    config: Settings = read_settings_from_config(
-        "/Users/samuel/Repositories/Examtracker/data/config.yml"  # Change this value
-    )
-```
-
-
 # Usage
 Once installed the programm can be used like so:
 ```bash
 examtracker
 ```
+
+## Configuration
+If you want to change the location of the db file you can do so inside a config file.
+The Programm searches for a file called __config.yml__ at __~/.config/examtracker/__
+
+<details>
+<summary> default config.yml </summary>
+```yaml
+database_path: "<path to repo>/data/test.db"
+css_path: "<path to repo>/data/style.css"
+```
+</details>
+
+### Enviroment variables
+All the configuration can be done with env-variables.
+You can also change to location the programm searches for the config at.
+
+<details>
+<summary> Enviroment variables overview</summary>
+```env
+EXAMTRACKER_DATABASE_PATH=/tmp/test.db
+EXAMTRACKER_CSS_PATH=/tmp/style.css
+
+EXAMTRACKER_CONFIG=/tmp/config.yml
+```
+</details>
+ 
 
 ## SQL Tables
 __exams__: ID; name; max\_points; scored\_points; class\_id
