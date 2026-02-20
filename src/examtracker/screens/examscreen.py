@@ -1,6 +1,7 @@
+from rich.text import Text
 from textual import on
 from textual.app import ComposeResult, Screen
-from textual.widgets import DataTable, Footer, Header
+from textual.widgets import Footer, Header
 
 from examtracker.database import (
     add_exam_to_class,
@@ -11,6 +12,15 @@ from examtracker.database import (
 )
 from examtracker.screens.inputscreens import TrippleInputScreen
 from examtracker.textual_utils.vimtable import VimTable
+
+
+def proc_color(value: float) -> str:
+    if value >= 75.0:
+        return "#03fc20"
+    elif value >= 50:
+        return "#fcf003"
+    else:
+        return "#fc1c03"
 
 
 class EditExamScreen(TrippleInputScreen):
@@ -125,7 +135,7 @@ class ExamScreen(Screen):
 
         self.exam_table: VimTable = VimTable()
         self.exam_table.add_columns("ID", "Name", "Max_points", "Scored_points", "%")
-        self.exam_table.cursor_type = "row"
+        self.exam_table.cursor_type = "cell"
         self.exam_table.border_title = f"Exams completed for: {self.class_name}"
         yield self.exam_table
 
@@ -158,17 +168,18 @@ class ExamScreen(Screen):
             if cls.max_points == 0:
                 proc = 0.0
             else:
-                proc = (cls.scored_points / cls.max_points) * 100
+                proc = round((cls.scored_points / cls.max_points) * 100, 2)
 
+            proc_text = Text(str(proc), style=proc_color(proc))
             self.exam_table.add_row(
-                cls.exam_id, cls.name, cls.max_points, cls.scored_points, proc
+                cls.exam_id, cls.name, cls.max_points, cls.scored_points, proc_text
             )
 
     def on_screen_resume(self) -> None:
         # Called when returning from AddSemesterScreen
         self.refresh_table()
 
-    @on(VimTable.RowSelected)
+    @on(VimTable.CellSelected)
     def action_edit(self) -> None:
         row_index = self.exam_table.cursor_row
         if row_index is None:

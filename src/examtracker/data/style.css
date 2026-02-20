@@ -1,10 +1,24 @@
 DataTable {
     border-title-align: center;
     border-title-style: bold;
-    margin: 5;
+    border-title-color: $foreground;
+    margin: 3;
     padding: 2;
     width: 75%;
     border: white;
+    text-style: bold;
+}
+
+
+DataTable .datatable--header {
+    text-style: bold;
+    background: $primary;
+    color: black;
+}
+
+DataTable .datatable--cursor {
+    background: $accent 60%;
+    text-style: italic underline;
 }
 
 Screen {
@@ -15,8 +29,8 @@ Screen {
 
 Vertical {
     margin: 5;
-    align: center top; 
-    width:75%;
+    align: center top;
+    width: 75%;
 }
 
 Input {
