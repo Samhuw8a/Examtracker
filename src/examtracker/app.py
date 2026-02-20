@@ -11,7 +11,7 @@ class ExamTracker(App):
         ("q", "quit", "Quit"),
         ("ctrl+c", "quit"),
     ]
-    CSS_PATH = "/Users/samuel/Repositories/Examtracker/src/examtracker/data/style.css"
+    # CSS_PATH = "/Users/samuel/Repositories/Examtracker/src/examtracker/data/style.css"
 
     def compose(self) -> ComposeResult:
         yield SemesterScreen()
@@ -19,7 +19,7 @@ class ExamTracker(App):
     def on_mount(self) -> None:
         self.theme = "gruvbox"
         self.push_screen(SemesterScreen())
-        # self.stylesheet.read(self.config.css_path)
+        self.stylesheet.read(self.config.css_path)
 
     def __init__(self, db_engine: Engine, config: Settings, **kwargs) -> None:
         super().__init__(**kwargs)
