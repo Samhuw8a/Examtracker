@@ -109,3 +109,4 @@ Environment variables override values defined in `config.yml`.
 - [x] Cross-platform config discovery  
 - [ ] Improve CSS  
 - [x] enable Editing Exams and Semester
+- [ ] Feature where you can add the grade you got in order to compute the diff. to the old exams
