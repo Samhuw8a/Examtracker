@@ -11,6 +11,7 @@ class ExamTracker(App):
         ("q", "quit", "Quit"),
         ("ctrl+c", "quit"),
     ]
+    ENABLE_COMMAND_PALETTE = False
     # CSS_PATH = "/Users/samuel/Repositories/Examtracker/src/examtracker/data/style.css"
 
     def compose(self) -> ComposeResult:
