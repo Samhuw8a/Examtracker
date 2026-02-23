@@ -5,9 +5,9 @@ Defining the database tables and entries
 from typing import List
 
 from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import (
+from sqlalchemy.orm import (  # type: ignore
     DeclarativeBase,
-    Mapped,  # type:ignore
+    Mapped,
     mapped_column,
     relationship,
 )

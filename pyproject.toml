@@ -12,7 +12,7 @@ description = "A Python exam tracker for the Lernphase .It allows you to keep tr
 
 readme = "README.md"
 
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 license = { file = "LICENSE" }
 
 authors = [{ name = "Samuel Huwiler", email = "samuel.huwiler@gmx.ch" }]
