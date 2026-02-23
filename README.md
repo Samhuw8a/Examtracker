@@ -111,5 +111,5 @@ Environment variables override values defined in `config.yml`.
 - [x] enable Editing Exams and Semester
 - [ ] Feature where you can add the grade you got in order to compute the diff. to the old exams
 - [ ] Enable externaly hosted database in config
-- [ ] write Tests
+- [x] write Tests
 - [ ] automagicly push new pypi versions and make release upon github tag push tag push
