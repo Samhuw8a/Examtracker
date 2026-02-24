@@ -2,7 +2,7 @@
 Defining the database tables and entries
 """
 
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import (  # type: ignore
@@ -34,6 +34,7 @@ class Class(Base):
     __tablename__ = "classes"
     class_id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
+    exam_grade: Mapped[Optional[float]]
     semester_id: Mapped[int] = mapped_column(ForeignKey("semester.semester_id"))
     semester: Mapped["Semester"] = relationship(back_populates="classes")  # type:ignore
 

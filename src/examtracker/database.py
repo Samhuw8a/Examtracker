@@ -2,7 +2,7 @@
 Database related functions for getting and adding entries
 """
 
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy import Engine, create_engine, inspect  # type:ignore
 from sqlalchemy.orm import Session
@@ -43,9 +43,14 @@ def get_exam_by_id(session: Session, exam_id: int) -> Exam:
 
 
 def add_class_to_semester(
-    session: Session, class_name: str, semster_obj: Semester
+    session: Session,
+    class_name: str,
+    semster_obj: Semester,
+    exam_grade: Optional[float] = None,
 ) -> None:
-    class_obj = Class(name=class_name, semester_id=semster_obj.semester_id)
+    class_obj = Class(
+        name=class_name, semester_id=semster_obj.semester_id, exam_grade=exam_grade
+    )
     session.add(class_obj)
     session.flush()
 
@@ -94,14 +99,15 @@ def remove_exam_by_id(session: Session, exam_id: int) -> None:
 
 def main() -> int:
     engine: Engine = create_database_engine("test.db")
-    # create_tables(engine)
+    create_tables(engine)
     session = Session(engine)
-    # # add_semester(session, "FS25")
+    add_semester(session, "FS25")
     # # remove_semester_by_name(session, "FS25")
     # # print(get_all_semester(session))
-    # sem = get_semester_by_name(session, "HS24")
-    # add_class_to_semester(session, "Eprog", sem)
-    # # cls = get_class_by_name(session,"Eprog")
+    sem = get_semester_by_name(session, "FS25")
+    add_class_to_semester(session, "wEprog", sem)
+    cls = get_all_classes_for_semester(session, sem)[0]
+    print(cls.exam_grade)
     # # print(get_all_exams_for_class(session, cls))
     session.commit()
     return 0

@@ -1,6 +1,6 @@
 from sqlalchemy import Engine  # type:ignore
 from sqlalchemy.orm import Session
-from textual.app import App, ComposeResult
+from textual.app import App
 
 from examtracker.screens.semesterscreen import SemesterScreen
 from examtracker.settings import Settings
@@ -13,9 +13,6 @@ class ExamTracker(App):
     ]
     ENABLE_COMMAND_PALETTE = False
     # CSS_PATH = "/Users/samuel/Repositories/Examtracker/src/examtracker/data/style.css"
-
-    def compose(self) -> ComposeResult:
-        yield SemesterScreen()
 
     def on_mount(self) -> None:
         self.theme = "gruvbox"
