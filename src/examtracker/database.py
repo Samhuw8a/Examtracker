@@ -10,8 +10,9 @@ from sqlalchemy.orm import Session
 from examtracker.database_scheme import Base, Class, Exam, Semester
 
 
-def create_database_engine(path: str) -> Engine:
-    engine = create_engine("sqlite:///" + path, echo=False)
+def create_database_engine(uri: str) -> Engine:
+    # engine = create_engine("sqlite:///" + path, echo=False)
+    engine = create_engine(uri, echo=False)
     inspector = inspect(engine)
 
     if not inspector.get_table_names():
@@ -98,7 +99,7 @@ def remove_exam_by_id(session: Session, exam_id: int) -> None:
 
 
 def main() -> int:
-    engine: Engine = create_database_engine("test.db")
+    engine: Engine = create_database_engine("sqlite:///test.db")
     create_tables(engine)
     session = Session(engine)
     add_semester(session, "FS25")

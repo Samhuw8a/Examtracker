@@ -54,6 +54,7 @@ By default, the program searches for:
 
 ```yaml
 database_path: "~/.config/examtracker/examtracker.db"
+database_uri: "sqllite:///~/.config/examtracker/examtracker.db"
 ```
 
 </details>

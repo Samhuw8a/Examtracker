@@ -6,3 +6,5 @@ pydantic-settings
 pathlib
 pyyaml
 rich
+pymysql
+cryptography

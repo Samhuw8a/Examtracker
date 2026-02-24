@@ -7,7 +7,7 @@ from examtracker.settings import Settings
 
 def main() -> int:
     config: Settings = Settings()
-    db_engine = create_database_engine(config.database_path)
+    db_engine = create_database_engine(config.database_uri)
     app = ExamTracker(db_engine, config)
     app.run()
     return 0

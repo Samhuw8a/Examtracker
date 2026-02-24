@@ -26,12 +26,12 @@ def get_config_dir() -> Path:
         return Path(dirs.user_config_dir)
 
 
-def get_default_database_path() -> Path:
+def get_default_database_uri() -> str:
     """Return a writable database path in the user data directory."""
 
     db_dir = get_config_dir()
     db_dir.mkdir(parents=True, exist_ok=True)
-    return db_dir / "examtracker.db"
+    return "sqlite:///" + str(db_dir / "examtracker.db")
 
 
 def get_default_css_path() -> Path:
@@ -58,7 +58,7 @@ def yaml_config_settings_source(settings_cls) -> Dict[str, Any]:
 
 
 class Settings(BaseSettings):
-    database_path: str = Field(default_factory=lambda: str(get_default_database_path()))
+    database_uri: str = Field(default_factory=lambda: str(get_default_database_uri()))
     css_path: str = Field(default_factory=lambda: str(get_default_css_path()))
     model_config = SettingsConfigDict(
         env_prefix="EXAMTRACKER_",
