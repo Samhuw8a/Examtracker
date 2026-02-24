@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 import pytest
 from hypothesis import given, settings
-from hypothesis.strategies import integers, text
+from hypothesis.strategies import floats, integers, text
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -105,6 +105,22 @@ def test_add_get_class(name: str) -> None:
         sem = get_semester_by_name(session, "Base Semester")
 
         add_class_to_semester(session, name, sem)
+        session.commit()
+
+        # Verify via relationship
+        classes = get_all_classes_for_semester(session, sem)
+        assert any(c.name == name for c in classes)
+
+
+@given(name=valid_text, score=floats())
+@settings(deadline=None)
+def test_add_get_class_with_score(name: str, score: float) -> None:
+    with temp_db() as session:
+        # Setup: Classes require a parent Semester
+        add_semester(session, "Base Semester")
+        sem = get_semester_by_name(session, "Base Semester")
+
+        add_class_to_semester(session, name, sem, score)
         session.commit()
 
         # Verify via relationship
