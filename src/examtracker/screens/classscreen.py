@@ -13,38 +13,43 @@ from examtracker.database import (
     remove_class_by_id,
 )
 from examtracker.screens.examscreen import ExamScreen
-from examtracker.screens.inputscreens import SingleInputScreen
+from examtracker.screens.inputscreens import DoubleInputScreen
 from examtracker.textual_utils.vimtable import VimTable
 
 
-class AddClassScreen(SingleInputScreen):
-
+class AddClassScreen(DoubleInputScreen):
     def __init__(self, semester_name: str, **kwargs) -> None:
         super().__init__(**kwargs)
         self.semester_name = semester_name
         self.label_text = f"Add class to: {self.semester_name}"
 
     def on_mount(self) -> None:
-        self.input_button.placeholder = "class name"
-        self.input_button.value = ""
-        self.input_button.focus()
+        self.input_button1.placeholder = "class name"
+        self.input_button1.value = ""
+        self.input_button2.placeholder = "exam_score"
+        self.input_button2.value = ""
+        self.input_button1.focus()
 
     # Submit on Enter from any Input
     def submit(self) -> None:
-        name = self.input_button.value.strip()
+        name = self.input_button1.value.strip()
+        exam_score = self.input_button2.value.strip()
+        try:
+            score = float(exam_score)
+        except ValueError:
+            score = None
         if not name:
             return  # Require class name
         semester = get_semester_by_name(self.db_session, self.semester_name)
         # Add the class
-        add_class_to_semester(self.db_session, name, semester)  # type: ignore
+        add_class_to_semester(self.db_session, name, semester, score)  # type: ignore
         self.db_session.commit()
 
         # Pop the screen and return
         self.app.pop_screen()
 
 
-class EditClassScreen(SingleInputScreen):
-
+class EditClassScreen(DoubleInputScreen):
     def __init__(self, class_id: int, **kwargs) -> None:
         super().__init__(**kwargs)
         self.class_id = class_id
@@ -52,18 +57,28 @@ class EditClassScreen(SingleInputScreen):
 
     def on_mount(self) -> None:
         class_obj = get_class_by_id(self.db_session, self.class_id)
-        self.input_button.value = class_obj.name
-        self.input_button.focus()
+        self.input_button1.value = class_obj.name
+        if class_obj.exam_grade is not None:
+            self.input_button2.value = str(class_obj.exam_grade)
+        else:
+            self.input_button2.value = ""
+        self.input_button1.focus()
 
     # Submit on Enter from any Input
     def submit(self) -> None:
-        name = self.input_button.value.strip()
+        name = self.input_button1.value.strip()
+        exam_score = self.input_button2.value.strip()
+        try:
+            score = float(exam_score)
+        except ValueError:
+            score = None
         if not name:
             return  # Require class name
 
         class_obj = get_class_by_id(self.db_session, self.class_id)
         # Add the class
         class_obj.name = name
+        class_obj.exam_grade = score
         self.db_session.commit()
 
         # Pop the screen and return
@@ -90,7 +105,7 @@ class ClassScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         self.class_table: VimTable = VimTable()
-        self.class_table.add_columns("ID", "Name")
+        self.class_table.add_columns("ID", "Name", "Exam grade")
         self.class_table.cursor_type = "row"
         self.class_table.border_title = f"classes for: {self.semester_name}"
         yield self.class_table
@@ -129,7 +144,11 @@ class ClassScreen(Screen):
 
         self.class_table.clear()
         for cls in get_all_classes_for_semester(self.db_session, semester):
-            self.class_table.add_row(cls.class_id, cls.name)
+            score = cls.exam_grade
+            str_score = ""
+            if score is not None:
+                str_score = cls.exam_grade
+            self.class_table.add_row(cls.class_id, cls.name, str_score)
 
     def on_screen_resume(self) -> None:
         self.refresh_table()
