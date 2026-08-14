@@ -105,6 +105,7 @@ Environment variables override values defined in `config.yml`.
 
 # TODO
 
+- [  ] Allow for floating point values for the points scored
 - [x] Handle SQL errors  
 - [x] Initialize database  
 - [x] Configuration file support  
