@@ -2,8 +2,6 @@
 Defining the database tables and entries
 """
 
-from typing import List, Optional
-
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import (  # type: ignore
     DeclarativeBase,
@@ -21,8 +19,8 @@ class Exam(Base):
     __tablename__ = "exams"
     exam_id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-    max_points: Mapped[int]
-    scored_points: Mapped[int]
+    max_points: Mapped[float]
+    scored_points: Mapped[float]
     class_id: Mapped[int] = mapped_column(ForeignKey("classes.class_id"))
     class_: Mapped["Class"] = relationship(back_populates="exams")  # type:ignore
 
@@ -34,11 +32,11 @@ class Class(Base):
     __tablename__ = "classes"
     class_id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-    exam_grade: Mapped[Optional[float]]
+    exam_grade: Mapped[float | None]
     semester_id: Mapped[int] = mapped_column(ForeignKey("semester.semester_id"))
     semester: Mapped["Semester"] = relationship(back_populates="classes")  # type:ignore
 
-    exams: Mapped[List["Exam"]] = relationship(
+    exams: Mapped[list["Exam"]] = relationship(
         back_populates="class_",
         cascade="all, delete-orphan",
     )  # type: ignore
@@ -51,7 +49,7 @@ class Semester(Base):
     __tablename__ = "semester"
     semester_id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30), unique=True)
-    classes: Mapped[List["Class"]] = relationship(
+    classes: Mapped[list["Class"]] = relationship(
         back_populates="semester",
         cascade="all, delete-orphan",
     )  # type: ignore

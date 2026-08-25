@@ -46,13 +46,13 @@ class EditExamScreen(TrippleInputScreen):
 
         # Optional exam points
         try:
-            max_points = int(self.input_button2.value.strip())
+            max_points = float(self.input_button2.value.strip())
         except ValueError:
             # Ignore invalid numbers for now
             max_points = 0
 
         try:
-            scored_points = int(self.input_button3.value.strip())
+            scored_points = float(self.input_button3.value.strip())
         except ValueError:
             # Ignore invalid numbers for now
             scored_points = 0
@@ -95,13 +95,13 @@ class AddExamScreen(TrippleInputScreen):
             return  # Require class name
 
         try:
-            max_points = int(self.input_button2.value.strip())
+            max_points = float(self.input_button2.value.strip())
         except ValueError:
             # Ignore invalid numbers for now
             max_points = 0
 
         try:
-            scored_points = int(self.input_button3.value.strip())
+            scored_points = float(self.input_button3.value.strip())
         except ValueError:
             # Ignore invalid numbers for now
             scored_points = 0

@@ -32,7 +32,7 @@ def get_semester_by_name(session: Session, name: str) -> Semester:
 def add_semester(session: Session, name: str) -> None:
     semester_obj = Semester(name=name)
     session.add(semester_obj)
-    session.flush
+    session.flush()
 
 
 def get_class_by_id(session: Session, class_id: int) -> Class:
@@ -57,7 +57,11 @@ def add_class_to_semester(
 
 
 def add_exam_to_class(
-    session: Session, name: str, max_points: int, scored_points: int, class_obj: Class
+    session: Session,
+    name: str,
+    max_points: float,
+    scored_points: float,
+    class_obj: Class,
 ) -> None:
     exam_obj = Exam(
         name=name,
