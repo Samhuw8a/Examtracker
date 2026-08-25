@@ -15,27 +15,27 @@ from examtracker.database import (
     remove_class_by_id,
 )
 from examtracker.screens.examscreen import ExamScreen
-from examtracker.screens.inputscreens import DoubleInputScreen
+from examtracker.screens.inputscreens import MultiInputScreen
 from examtracker.textual_utils.vimtable import VimTable
 
 
-class AddClassScreen(DoubleInputScreen):
+class AddClassScreen(MultiInputScreen):
     def __init__(self, semester_name: str, **kwargs) -> None:
-        super().__init__(**kwargs)
+        super().__init__(2, **kwargs)
         self.semester_name = semester_name
         self.label_text = f"Add class to: {self.semester_name}"
 
     def on_mount(self) -> None:
-        self.input_button1.placeholder = "class name"
-        self.input_button1.value = ""
-        self.input_button2.placeholder = "exam_score"
-        self.input_button2.value = ""
-        self.input_button1.focus()
+        self.buttons[0].placeholder = "class name"
+        self.buttons[0].value = ""
+        self.buttons[1].placeholder = "exam_score"
+        self.buttons[1].value = ""
+        self.buttons[0].focus()
 
     # Submit on Enter from any Input
     def submit(self) -> None:
-        name = self.input_button1.value.strip()
-        exam_score = self.input_button2.value.strip()
+        name = self.buttons[0].value.strip()
+        exam_score = self.buttons[1].value.strip()
         try:
             score = float(exam_score)
         except ValueError:
@@ -51,25 +51,25 @@ class AddClassScreen(DoubleInputScreen):
         self.app.pop_screen()
 
 
-class EditClassScreen(DoubleInputScreen):
+class EditClassScreen(MultiInputScreen):
     def __init__(self, class_id: int, **kwargs) -> None:
-        super().__init__(**kwargs)
+        super().__init__(2, **kwargs)
         self.class_id = class_id
         self.label_text = "Edit class"
 
     def on_mount(self) -> None:
         class_obj = get_class_by_id(self.db_session, self.class_id)
-        self.input_button1.value = class_obj.name
+        self.buttons[0].value = class_obj.name
         if class_obj.exam_grade is not None:
-            self.input_button2.value = str(class_obj.exam_grade)
+            self.buttons[1].value = str(class_obj.exam_grade)
         else:
-            self.input_button2.value = ""
-        self.input_button1.focus()
+            self.buttons[1].value = ""
+        self.buttons[0].focus()
 
     # Submit on Enter from any Input
     def submit(self) -> None:
-        name = self.input_button1.value.strip()
-        exam_score = self.input_button2.value.strip()
+        name = self.buttons[0].value.strip()
+        exam_score = self.buttons[1].value.strip()
         try:
             score = float(exam_score)
         except ValueError:

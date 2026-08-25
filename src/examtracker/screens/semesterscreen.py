@@ -12,23 +12,23 @@ from examtracker.database import (
     remove_semester_by_name,
 )
 from examtracker.screens.classscreen import ClassScreen
-from examtracker.screens.inputscreens import SingleInputScreen
+from examtracker.screens.inputscreens import MultiInputScreen
 from examtracker.textual_utils.vimtable import VimTable
 
 
-class AddSemesterScreen(SingleInputScreen):
+class AddSemesterScreen(MultiInputScreen):
 
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__(1, *args, **kwargs)
         self.label_text = "Add new semester"
 
     def on_mount(self) -> None:
-        self.input_button.focus()
-        self.input_button.placeholder = "semester name"
-        self.input_button.value = ""
+        self.buttons[0].focus()
+        self.buttons[0].placeholder = "semester name"
+        self.buttons[0].value = ""
 
     def submit(self) -> None:
-        name = self.input_button.value.strip()
+        name = self.buttons[0].value.strip()
         if not name:
             return
         try:
@@ -42,20 +42,20 @@ class AddSemesterScreen(SingleInputScreen):
         self.app.pop_screen()
 
 
-class EditSemesterScreen(SingleInputScreen):
+class EditSemesterScreen(MultiInputScreen):
 
     def __init__(self, semester_name: str, **kwargs) -> None:
-        super().__init__(**kwargs)
+        super().__init__(1, **kwargs)
         self.semester_name = semester_name
         self.label_text = "Edit semester"
 
     def on_mount(self) -> None:
         semester = get_semester_by_name(self.db_session, self.semester_name)
-        self.input_button.value = semester.name
-        self.input_button.focus()
+        self.buttons[0].value = semester.name
+        self.buttons[0].focus()
 
     def submit(self) -> None:
-        name = self.input_button.value.strip()
+        name = self.buttons[0].value.strip()
         if not name:
             return
         semester = get_semester_by_name(self.db_session, self.semester_name)
