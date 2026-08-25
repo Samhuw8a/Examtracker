@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 from sqlalchemy.orm import Session
 from textual import on
 from textual.app import ComposeResult, Screen
@@ -71,6 +73,9 @@ class EditClassScreen(DoubleInputScreen):
         try:
             score = float(exam_score)
         except ValueError:
+            score = None
+
+        if isinstance(score, float) and not math.isfinite(score):
             score = None
         if not name:
             return  # Require class name

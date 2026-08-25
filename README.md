@@ -105,7 +105,7 @@ Environment variables override values defined in `config.yml`.
 
 # TODO
 
-- [  ] Allow for floating point values for the points scored
+- [x] Allow for floating point values for the points scored
 - [x] Handle SQL errors  
 - [x] Initialize database  
 - [x] Configuration file support  
@@ -115,6 +115,7 @@ Environment variables override values defined in `config.yml`.
 - [x] enable Editing Exams and Semester
 - [x] Feature where you can add the grade you got in the exams
 - [ ] Enable externaly hosted database in config
-- [ ] Add a Notes section to the Exams for adding notes
+- [x] Add a Notes section to the Exams for adding notes
+- [  ] Fix sizing issue when removing a large note from an exam
 - [x] write Tests
 - [x] automagicly push new pypi versions and make release upon github tag push tag push

@@ -61,12 +61,14 @@ def add_exam_to_class(
     name: str,
     max_points: float,
     scored_points: float,
+    notes: str,
     class_obj: Class,
 ) -> None:
     exam_obj = Exam(
         name=name,
         max_points=max_points,
         scored_points=scored_points,
+        notes=notes,
         class_id=class_obj.class_id,
     )
     session.add(exam_obj)

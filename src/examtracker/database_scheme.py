@@ -21,6 +21,7 @@ class Exam(Base):
     name: Mapped[str] = mapped_column(String(30))
     max_points: Mapped[float]
     scored_points: Mapped[float]
+    notes: Mapped[str] = mapped_column(String(100))
     class_id: Mapped[int] = mapped_column(ForeignKey("classes.class_id"))
     class_: Mapped["Class"] = relationship(back_populates="exams")  # type:ignore
 
