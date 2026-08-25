@@ -87,10 +87,8 @@ def test_semester_name_uniqueness(name: str) -> None:
         session.commit()
 
         # Second insertion of the exact same name
-        add_semester(session, name)
-
         with pytest.raises(IntegrityError):
-            session.commit()
+            add_semester(session, name)
 
 
 # ------------- Class tests -------------
@@ -139,11 +137,18 @@ def test_get_nonexistant_class() -> None:
 
 @given(
     name=valid_text,
-    max_points=integers(min_value=0, max_value=10000),
-    scored_points=integers(min_value=0, max_value=10000),
+    max_points=floats(
+        min_value=0, max_value=10000, allow_infinity=False, allow_nan=False
+    ),
+    scored_points=floats(
+        min_value=0, max_value=10000, allow_infinity=False, allow_nan=False
+    ),
+    notes=text(),
 )
 @settings(deadline=None)
-def test_add_get_exam(name: str, max_points: int, scored_points: int) -> None:
+def test_add_get_exam(
+    name: str, max_points: float, scored_points: float, notes: str
+) -> None:
     with temp_db() as session:
         # Setup Hierarchy: Semester -> Class
         add_semester(session, "S1")
@@ -151,7 +156,7 @@ def test_add_get_exam(name: str, max_points: int, scored_points: int) -> None:
         add_class_to_semester(session, "C1", sem)
         cls = sem.classes[0]
 
-        add_exam_to_class(session, name, max_points, scored_points, cls)
+        add_exam_to_class(session, name, max_points, scored_points, notes, cls)
         session.commit()
 
         # Verify exam data
@@ -160,6 +165,7 @@ def test_add_get_exam(name: str, max_points: int, scored_points: int) -> None:
         assert exams[0].name == name
         assert exams[0].max_points == max_points
         assert exams[0].scored_points == scored_points
+        assert exams[0].notes == notes
 
 
 def test_get_nonexistant_exam() -> None:
@@ -181,7 +187,7 @@ def test_remove_semester_cascades_to_classes_and_exams() -> None:
         add_class_to_semester(session, "Nested Class", sem)
         cls = sem.classes[0]
 
-        add_exam_to_class(session, "Nested Exam", 100, 90, cls)
+        add_exam_to_class(session, "Nested Exam", 100, 90, "notes", cls)
         session.commit()
 
         # Capture IDs to verify deletion later
@@ -229,7 +235,7 @@ def test_remove_exam_by_id_logic() -> None:
         sem = get_semester_by_name(session, "S1")
         add_class_to_semester(session, "C1", sem)
         cls = sem.classes[0]
-        add_exam_to_class(session, "Final", 100, 100, cls)
+        add_exam_to_class(session, "Final", 100, 100, "notes", cls)
         session.commit()
 
         exam_id = cls.exams[0].exam_id
@@ -259,7 +265,7 @@ def test_empty_relationships_return_empty_list() -> None:
         assert get_all_exams_for_class(session, cls) == []
 
 
-@given(pts=integers(min_value=0, max_value=2147483647))  # Max 32-bit signed int
+@given(pts=floats(allow_infinity=False, allow_nan=False))  # Max 32-bit signed int
 def test_exam_score_boundaries(pts: int) -> None:
     """Tests that the database handles large point values correctly."""
     with temp_db() as session:
@@ -268,7 +274,7 @@ def test_exam_score_boundaries(pts: int) -> None:
         add_class_to_semester(session, "Math", sem)
         cls = sem.classes[0]
 
-        add_exam_to_class(session, "Big Score", pts, pts, cls)
+        add_exam_to_class(session, "Big Score", pts, pts, "notes", cls)
         session.commit()
 
         exam = get_all_exams_for_class(session, cls)[0]
