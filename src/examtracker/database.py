@@ -2,21 +2,19 @@
 Database related functions for getting and adding entries
 """
 
-from typing import List, Optional
+from typing import Optional
 
-from sqlalchemy import Engine, create_engine, inspect  # type:ignore
+from sqlalchemy import Engine  # type:ignore
 from sqlalchemy.orm import Session
 
 from examtracker.database_scheme import Base, Class, Exam, Semester
 
 
 def create_database_engine(uri: str) -> Engine:
-    # engine = create_engine("sqlite:///" + path, echo=False)
-    engine = create_engine(uri, echo=False)
-    inspector = inspect(engine)
+    from sqlalchemy import create_engine
 
-    if not inspector.get_table_names():
-        create_tables(engine)
+    engine = create_engine(uri, echo=False)
+    create_tables(engine)
 
     return engine
 
@@ -75,17 +73,17 @@ def add_exam_to_class(
     session.flush()
 
 
-def get_all_exams_for_class(session: Session, class_obj: Class) -> List[Exam]:
+def get_all_exams_for_class(session: Session, class_obj: Class) -> list[Exam]:
     return session.query(Exam).filter_by(class_id=class_obj.class_id).all()
 
 
-def get_all_semester(session: Session) -> List[Semester]:
+def get_all_semester(session: Session) -> list[Semester]:
     return session.query(Semester).all()
 
 
 def get_all_classes_for_semester(
     session: Session, semster_obj: Semester
-) -> List[Class]:
+) -> list[Class]:
     return session.query(Class).filter_by(semester_id=semster_obj.semester_id).all()
 
 

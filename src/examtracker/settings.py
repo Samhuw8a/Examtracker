@@ -4,9 +4,8 @@ import os
 import sys
 from importlib.resources import files
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
-import yaml  # type: ignore
 from platformdirs import PlatformDirs
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -39,7 +38,9 @@ def get_default_css_path() -> Path:
     return Path(files("examtracker").joinpath("data/style.css"))  # type:ignore
 
 
-def yaml_config_settings_source(settings_cls) -> Dict[str, Any]:
+def yaml_config_settings_source(settings_cls) -> dict[str, Any]:
+    import yaml  # type: ignore
+
     config_path = os.getenv("EXAMTRACKER_CONFIG")
 
     if config_path:

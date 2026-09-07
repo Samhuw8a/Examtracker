@@ -1,6 +1,5 @@
 import math
 
-from rich.text import Text
 from textual import on
 from textual.app import ComposeResult, Screen
 from textual.widgets import Footer, Header
@@ -180,6 +179,8 @@ class ExamScreen(Screen):
         self.refresh_table()
 
     def refresh_table(self) -> None:
+        from rich.text import Text
+
         class_obj = get_class_by_id(self.db_session, self.class_id)
 
         self.exam_table.clear()
