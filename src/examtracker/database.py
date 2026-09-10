@@ -78,7 +78,7 @@ def get_all_exams_for_class(session: Session, class_obj: Class) -> list[Exam]:
 
 
 def get_all_semester(session: Session) -> list[Semester]:
-    return session.query(Semester).all()
+    return session.query(Semester).all()[::-1]
 
 
 def get_all_classes_for_semester(
