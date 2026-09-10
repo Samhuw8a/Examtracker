@@ -79,6 +79,7 @@ class SemesterScreen(Screen):
 
     def __init__(self) -> None:
         super().__init__()
+        self.latest_row = 0
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -98,6 +99,7 @@ class SemesterScreen(Screen):
         self.semester_table.clear()
         for sem in get_all_semester(self.db_session):
             self.semester_table.add_row(sem.name)
+        self.semester_table.move_cursor(row=self.latest_row, column=0)
 
     def action_edit(self) -> None:
         row_index = self.semester_table.cursor_row
@@ -133,6 +135,7 @@ class SemesterScreen(Screen):
         row_index = self.semester_table.cursor_row
         if row_index is None:
             return
+        self.latest_row = row_index
 
         semester_name = self.semester_table.get_row_at(row_index)[0]
         self.app.push_screen(ClassScreen(semester_name))

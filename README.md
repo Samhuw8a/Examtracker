@@ -117,6 +117,6 @@ Environment variables override values defined in `config.yml`.
 - [ ] Enable externaly hosted database in config
 - [x] Add a Notes section to the Exams for adding notes
 - [  ] Fix sizing issue when removing a large note from an exam
-- [  ] Save the collumn when entering a submenu to set the cursor to the same place as before instead of to the top
+- [x] Save the collumn when entering a submenu to set the cursor to the same place as before instead of to the top
 - [x] write Tests
 - [x] automagicly push new pypi versions and make release upon github tag push tag push

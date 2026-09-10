@@ -106,6 +106,7 @@ class ClassScreen(Screen):
         super().__init__()
         self.db_session: Session = self.app.db_session  # type: ignore
         self.semester_name = semester_name
+        self.latest_row = 0
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -152,8 +153,10 @@ class ClassScreen(Screen):
             score = cls.exam_grade
             str_score = ""
             if score is not None:
-                str_score = cls.exam_grade
+                str_score = str(cls.exam_grade)
             self.class_table.add_row(cls.class_id, cls.name, str_score)
+
+        self.class_table.move_cursor(row=self.latest_row, column=0)
 
     def on_screen_resume(self) -> None:
         self.refresh_table()
@@ -163,6 +166,7 @@ class ClassScreen(Screen):
         row_index = self.class_table.cursor_row
         if row_index is None:
             return
+        self.latest_row = row_index
 
         class_id = self.class_table.get_row_at(row_index)[0]
         self.app.push_screen(ExamScreen(class_id))
